@@ -15,6 +15,8 @@ import javax.validation.constraints.Size;
 @Entity
 public class Test {
 	
+	//This is to check git
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
