@@ -19,4 +19,15 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		
 	}
 	
+	@ExceptionHandler
+	public final ResponseEntity<Object> handleProjectIdException(ReportIdException ex, WebRequest request){
+		ReportIdExceptionResponse exceptionResponse = new ReportIdExceptionResponse(ex.getMessage());
+		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
+	}
+	
 }
+
+
+	
+	
+
