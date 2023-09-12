@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @Entity
 public class Test {
 	
-	//This is to check git
+	//This is to check from sts to git
 	//This is to check from git to sts
 	
 	@Id
