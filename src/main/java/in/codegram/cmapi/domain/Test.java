@@ -17,6 +17,7 @@ public class Test {
 	
 	//This is to check from sts to git
 	//This is to check from git to sts
+	//This is to check changes from git to sts
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
