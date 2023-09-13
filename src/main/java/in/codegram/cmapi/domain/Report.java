@@ -2,7 +2,7 @@ package in.codegram.cmapi.domain;
 
 import java.util.Date;
 
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Report {
@@ -22,6 +23,10 @@ public class Report {
 	private String batch;
 	@NotBlank(message = "Technology name can not be empty")
 	private String technology;
+	@NotBlank(message="report identifier cannot be empty")
+	@Size(min=4, max=12,message="report identifier must be in the range of 4 to 12 character")
+	@Column(updatable = false, unique =true)
+	private String reportIdentifier;
 	private Date report_create_At;
 	private Date report_update_At;
 
@@ -83,6 +88,16 @@ public class Report {
 
 	public void setReport_update_At(Date report_update_At) {
 		this.report_update_At = report_update_At;
+	}
+	
+	
+
+	public String getReportIdentifier() {
+		return reportIdentifier;
+	}
+
+	public void setReportIdentifier(String reportIdentifier) {
+		this.reportIdentifier = reportIdentifier;
 	}
 
 	@PrePersist

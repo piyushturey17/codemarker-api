@@ -2,19 +2,19 @@ package in.codegram.cmapi.exception;
 
 public class ReportIdExceptionResponse {
 
-	private String projectIdentifier;
+	private String reportIdentifier;
 
 	public ReportIdExceptionResponse(String projectIdentifier) {
 		super();
-		this.projectIdentifier = projectIdentifier;
+		this.reportIdentifier = projectIdentifier;
 	}
 
 	public String getProjectIdentifier() {
-		return projectIdentifier;
+		return reportIdentifier;
 	}
 
 	public void setProjectIdentifier(String projectIdentifier) {
-		this.projectIdentifier = projectIdentifier;
+		this.reportIdentifier = projectIdentifier;
 	}
 	
 	
