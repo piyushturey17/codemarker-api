@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import in.codegram.cmapi.domain.Batch;
 import in.codegram.cmapi.service.MapValidationErrorService;
 import in.codegram.cmapi.service.BatchService;
-
 @RestController
 @RequestMapping("/api/Batch")
 public class BatchController {
