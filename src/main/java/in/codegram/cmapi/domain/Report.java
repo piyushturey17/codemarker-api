@@ -23,15 +23,22 @@ public class Report {
 	private String batch;
 	@NotBlank(message = "Technology name can not be empty")
 	private String technology;
-	@NotBlank(message="report identifier cannot be empty")
-	@Size(min=4, max=12,message="report identifier must be in the range of 4 to 12 character")
-	@Column(updatable = false, unique =true)
+	@NotBlank(message="test identifier cannot be empty")
+	@Size(min=4,max=5,message="report identifier must be in the range of 4 to 5 character")
+	@Column(updatable = false,unique = true)
 	private String reportIdentifier;
+	public String getReportIdentifier() {
+		return reportIdentifier;
+	}
+
+	public void setReportIdentifier(String reportIdentifier) {
+		this.reportIdentifier = reportIdentifier;
+	}
+
 	private Date report_create_At;
 	private Date report_update_At;
 	
-//	To check form sts to Git : 
-//	Adarsh
+
 
 	public Report() {
 
@@ -69,13 +76,6 @@ public class Report {
 		this.technology = technology;
 	}
 
-	public Report(Long id, String name, String batch, String technology) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.batch = batch;
-		this.technology = technology;
-	}
 
 	public Date getReport_create_At() {
 		return report_create_At;
@@ -91,16 +91,6 @@ public class Report {
 
 	public void setReport_update_At(Date report_update_At) {
 		this.report_update_At = report_update_At;
-	}
-	
-	
-
-	public String getReportIdentifier() {
-		return reportIdentifier;
-	}
-
-	public void setReportIdentifier(String reportIdentifier) {
-		this.reportIdentifier = reportIdentifier;
 	}
 
 	@PrePersist

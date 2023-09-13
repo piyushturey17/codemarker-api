@@ -1,26 +1,25 @@
 package in.codegram.cmapi.web;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 
 import in.codegram.cmapi.domain.Report;
 import in.codegram.cmapi.service.ReportService;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 @RestController
-@RequestMapping("api/reports")
+@RequestMapping("/reports")
 public class ReportController {
     private final ReportService studentService;
 
@@ -45,9 +44,24 @@ public class ReportController {
     }
 
     @PostMapping("")
-    public Report createStudent(@Valid @RequestBody Report student) {
-    	
-        return studentService.createStudent(student);
+    public ResponseEntity<?> createStudent(@Valid @RequestBody Report student, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> validationErrors = new HashMap<>();
+            for (FieldError error : result.getFieldErrors()) {
+                validationErrors.put(error.getField(), error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(validationErrors);
+        } else {
+            try {
+                Report createdStudent = studentService.createStudent(student);
+                return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
+            } catch (DataIntegrityViolationException e) {
+                // Handle the database constraint violation and return a custom error message
+                Map<String, String> errorResponse = new HashMap<>();
+                errorResponse.put("reportIdentifier", "Duplicate reportIdentifier not allowed.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            }
+        }
     }
 
 
@@ -69,11 +83,19 @@ public class ReportController {
 }
 
 
-/**
- *  @PostMapping("/")
-    public Student createStudent(@Valid @RequestBody Student student , BindingResult bindingResult) {
-    	
-        return studentService.createStudent(student);
+
+
+/*
+ *     @PostMapping("")
+    public ResponseEntity<?> createStudent(@Valid @RequestBody Report student, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> validationErrors = new HashMap<>();
+            for (FieldError error : result.getFieldErrors()) {
+                validationErrors.put(error.getField(), error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(validationErrors);
+        } else {
+            return ResponseEntity.status(HttpStatus.CREATED).body(studentService.createStudent(student));
+        }
     }
  */
-
