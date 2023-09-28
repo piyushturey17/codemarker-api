@@ -6,20 +6,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ReportIdException extends RuntimeException {
 
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * This will create ProjectIdException without error message
+	 * This will create TestIdExcception object without error message
 	 */
 	public ReportIdException() {
 		super();
 	}
 	
 	/**
-	 * This will create ProjectIdException with error message
+	 * This will create TestIdExcception object with error message
 	 */
 	public ReportIdException(String errMsg) {
 		super(errMsg);

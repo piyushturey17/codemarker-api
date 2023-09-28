@@ -12,7 +12,10 @@ import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+
+
 //push
+
 @Entity
 public class Batch {
 	@Id

@@ -1,20 +1,13 @@
 package in.codegram.cmapi.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import in.codegram.cmapi.domain.Report;
 
-
-
 public interface ReportService {
-	List<Report> getAllStudents();
 
-	Optional<Report> getStudentById(Long id);
+	public Report saveOrUpdate(Report report);
 
-	Report createStudent(Report student);
+	Iterable<Report> findAllReports();
 
-	Report updateStudent(Long id, Report updatedStudent);
-
-	void deleteStudent(Long id);
+	void delete(String reportId);
+	Report findReportByReportIdentifier(String reportIdentifier);
 }

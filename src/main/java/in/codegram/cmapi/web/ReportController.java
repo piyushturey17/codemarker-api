@@ -1,101 +1,63 @@
 package in.codegram.cmapi.web;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import in.codegram.cmapi.domain.Report;
+import in.codegram.cmapi.domain.Test;
+import in.codegram.cmapi.service.MapValidationErrorService;
 import in.codegram.cmapi.service.ReportService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
 @RestController
-@RequestMapping("/reports")
+@RequestMapping("/api/reports")
+@CrossOrigin
 public class ReportController {
-    private final ReportService studentService;
 
-    @Autowired
-    public ReportController(ReportService studentService) {
-        this.studentService = studentService;
-    }
+	@Autowired
+	private ReportService reportService;
 
-    @GetMapping("/all")
-    public List<Report> getAllStudents() {
-        return studentService.getAllStudents();
-    }
+	@Autowired
+	private MapValidationErrorService mapValidationErrorService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Report> getStudentById(@PathVariable Long id) {
-        Optional<Report> student = studentService.getStudentById(id);
-        if (student.isPresent()) {
-            return ResponseEntity.ok(student.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@PostMapping("")
+	public ResponseEntity<?> createNewReport(@Valid @RequestBody Report report, BindingResult result) {
+		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
+		if (errorMap != null) {
+			return errorMap;
+		}
 
-    @PostMapping("")
-    public ResponseEntity<?> createStudent(@Valid @RequestBody Report student, BindingResult result) {
-        if (result.hasErrors()) {
-            Map<String, String> validationErrors = new HashMap<>();
-            for (FieldError error : result.getFieldErrors()) {
-                validationErrors.put(error.getField(), error.getDefaultMessage());
-            }
-            return ResponseEntity.badRequest().body(validationErrors);
-        } else {
-            try {
-                Report createdStudent = studentService.createStudent(student);
-                return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
-            } catch (DataIntegrityViolationException e) {
-                // Handle the database constraint violation and return a custom error message
-                Map<String, String> errorResponse = new HashMap<>();
-                errorResponse.put("reportIdentifier", "Duplicate reportIdentifier not allowed.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-            }
-        }
-    }
+		Report report_save = reportService.saveOrUpdate(report);
+		return new ResponseEntity<Report>(report_save, HttpStatus.CREATED);
+	}
 
+	@GetMapping("/all")
+	public Iterable<Report> getAllReports() {
+		return reportService.findAllReports();
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Report> updateStudent(@PathVariable Long id, @RequestBody Report updatedStudent) {
-        Report student = studentService.updateStudent(id, updatedStudent);
-        if (student != null) {
-            return ResponseEntity.ok(student);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
-        studentService.deleteStudent(id);
-        return ResponseEntity.ok().build();
-    }
+	@DeleteMapping("/{reportId}")
+	public ResponseEntity<?> removeReport(@PathVariable String reportId) {
+		reportService.delete(reportId);
+		return new ResponseEntity<String>("Report Deleted Successfully", HttpStatus.OK);
+	}
+
+	@GetMapping("/{reportIdentifier}")
+	public ResponseEntity<?> getReportById(@PathVariable String reportIdentifier) {
+		Report report = reportService.findReportByReportIdentifier(reportIdentifier);
+		return new ResponseEntity<Report>(report, HttpStatus.OK);
+	}
+
 }
-
-
-
-
-/*
- *     @PostMapping("")
-    public ResponseEntity<?> createStudent(@Valid @RequestBody Report student, BindingResult result) {
-        if (result.hasErrors()) {
-            Map<String, String> validationErrors = new HashMap<>();
-            for (FieldError error : result.getFieldErrors()) {
-                validationErrors.put(error.getField(), error.getDefaultMessage());
-            }
-            return ResponseEntity.badRequest().body(validationErrors);
-        } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(studentService.createStudent(student));
-        }
-    }
- */

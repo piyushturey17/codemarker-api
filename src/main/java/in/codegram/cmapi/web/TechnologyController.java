@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.codegram.cmapi.domain.Technology;
+import in.codegram.cmapi.domain.Test;
 import in.codegram.cmapi.service.MapValidationErrorService;
 import in.codegram.cmapi.service.TechnologyService;
 
 
 @RestController
 @RequestMapping("/api/technologies")
+@CrossOrigin
 public class TechnologyController {
 	
 	@Autowired
@@ -51,6 +54,12 @@ public class TechnologyController {
 	    public ResponseEntity<?>removeProject(@PathVariable String technologyId) {
 		technologyService.delete(technologyId);
 		return new ResponseEntity<String>("Technology Deleted Successfully",HttpStatus.OK);
+	}
+	
+	@GetMapping("/{technologyIdentifier}")
+	public ResponseEntity<?> getTechnologyById(@PathVariable String technologyIdentifier){
+		Technology technology = technologyService.findTechnologyByTechnologyIdentifier(technologyIdentifier);
+		return new ResponseEntity<Technology>(technology,HttpStatus.OK);
 	}
 }
 

@@ -38,6 +38,16 @@ public class TestServiceImpl implements TestService {
 		Test test = testRepository.findByTestIdentifier(testId);
 		testRepository.delete(test);
 	}
+	
+	@Override
+	public Test findTestByTestIdentifier(String testIdentifier) {
+		Test test = testRepository.findByTestIdentifier(testIdentifier);
+		if(test==null) {
+			throw new TestIdException("Test Id :"+testIdentifier+"does not exist");
+		}
+		return test;
+		
+	}
 
 	
 

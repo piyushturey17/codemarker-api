@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import in.codegram.cmapi.service.TestService;
 
 @RestController
 @RequestMapping("/api/tests")
+@CrossOrigin
 public class TestController {
 	
 	@Autowired
@@ -55,6 +57,12 @@ public class TestController {
 	public ResponseEntity<?> removeTest(@PathVariable String testId) {
 		testService.delete(testId);
 		return new ResponseEntity<String>("Test Deleted Successfully",HttpStatus.OK);
+	}
+	
+	@GetMapping("/{testIdentifier}")
+	public ResponseEntity<?> getTestById(@PathVariable String testIdentifier){
+		Test test = testService.findTestByTestIdentifier(testIdentifier);
+		return new ResponseEntity<Test>(test,HttpStatus.OK);
 	}
 
 }

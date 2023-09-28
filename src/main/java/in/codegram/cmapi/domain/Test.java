@@ -12,7 +12,10 @@ import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 @Entity
+
 public class Test {
 	
 	//This is to check from sts to git
@@ -35,6 +38,7 @@ public class Test {
 	private Date test_end_date;
 	private Date test_created_At;
 	private Date test_updated_At;
+	
 	public Long getId() {
 		return id;
 	}

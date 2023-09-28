@@ -4,47 +4,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.codegram.cmapi.domain.Report;
+import in.codegram.cmapi.exception.ReportIdException;
 import in.codegram.cmapi.repository.ReportRepository;
 import in.codegram.cmapi.service.ReportService;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class ReportServiceImpl implements ReportService {
-    private final ReportRepository studentRepository;
 
-    @Autowired
-    public ReportServiceImpl(ReportRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+	@Autowired
+	private ReportRepository reportRepository;
 
-    @Override
-    public List<Report> getAllStudents() {
-        return studentRepository.findAll();
-    }
+	@Override
+	public Report saveOrUpdate(Report report) {
+		try {
 
-    @Override
-    public Optional<Report> getStudentById(Long id) {
-        return studentRepository.findById(id);
-    }
+			return reportRepository.save(report);
 
-    @Override
-    public Report createStudent(Report student) {
-        return studentRepository.save(student);
-    }
+		} catch (Exception ex) {
+			// handling logic -- rethrow exception to sent till UI layer
+			throw new ReportIdException("Report Id : " + report.getReportIdentifier() + " already exist");
+		}
+	}
 
-    @Override
-    public Report updateStudent(Long id, Report updatedStudent) {
-        if (studentRepository.existsById(id)) {
-            updatedStudent.setId(id);
-            return studentRepository.save(updatedStudent);
-        }
-        return null; // Handle error appropriately
-    }
+	@Override
+	public Iterable<Report> findAllReports() {
+		return reportRepository.findAll();
+	}
 
-    @Override
-    public void deleteStudent(Long id) {
-        studentRepository.deleteById(id);
-    }
+	@Override
+	public void delete(String reportId) {
+		Report report = reportRepository.findByReportIdentifier(reportId);
+		reportRepository.delete(report);
+
+	}
+
+	@Override
+	public Report findReportByReportIdentifier(String reportIdentifier) {
+		Report report = reportRepository.findByReportIdentifier(reportIdentifier);
+		if (report == null) {
+			throw new ReportIdException("Test Id :" + reportIdentifier + "does not exist");
+		}
+		return report;
+	}
+
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import in.codegram.cmapi.domain.Technology;
 import in.codegram.cmapi.exception.TechnologyIdException;
+
 import in.codegram.cmapi.repository.TechnologyRepository;
 import in.codegram.cmapi.service.TechnologyService;
 
@@ -33,6 +34,16 @@ public class TechnologyServiceImpl  implements TechnologyService{
 	public void delete(String technologyId) {
 	 Technology technology=technologyRepository.findByTechnologyIdentifier(technologyId);//FP01,FP02
 	 technologyRepository.delete(technology);
+	}
+	
+	@Override
+	public Technology findTechnologyByTechnologyIdentifier(String technologyIdentifier) {
+		Technology technology = technologyRepository.findByTechnologyIdentifier(technologyIdentifier);
+		if(technology==null) {
+			throw new TechnologyIdException("Technology Id :"+technologyIdentifier+"does not exist");
+		}
+		return technology;
+		
 	}
 
 }

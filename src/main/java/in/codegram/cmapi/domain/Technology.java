@@ -12,7 +12,10 @@ import javax.persistence.PreUpdate;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 @Entity
+
 public class Technology{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

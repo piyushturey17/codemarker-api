@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import in.codegram.cmapi.service.MapValidationErrorService;
 import in.codegram.cmapi.service.BatchService;
 @RestController
 @RequestMapping("/api/Batch")
+@CrossOrigin
 public class BatchController {
 
 	@Autowired
@@ -51,6 +53,12 @@ public class BatchController {
 	public ResponseEntity<?> removeProject(@PathVariable String BatchID) {
 		BatchService.delete(BatchID);
 		return new ResponseEntity<String>("Batch Deleted Sucessfully",HttpStatus.OK);
+	}
+	
+	@GetMapping("/{batchIdentifier}")
+	public ResponseEntity<?> getBatchById(@PathVariable String batchIdentifier){
+		Batch batch = BatchService.findBatchByBatchIdentifier(batchIdentifier);
+		return new ResponseEntity<Batch>(batch,HttpStatus.OK);
 	}
 
 

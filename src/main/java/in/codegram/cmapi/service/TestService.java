@@ -10,4 +10,5 @@ public interface TestService {
 	
 	void delete(String testId);
 
+	Test findTestByTestIdentifier(String testIdentifier);
 }

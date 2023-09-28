@@ -44,6 +44,15 @@ public class BatchServiceImpl implements BatchService{
 		
 	}
 
+	@Override
+	public Batch findBatchByBatchIdentifier(String batchIdentifier) {
+		Batch batch = batchRepository.findByBatchIdentifier(batchIdentifier);
+		if(batch==null) {
+			throw new BatchIdException("Batch Id :"+batchIdentifier+"does not exist");
+		}
+		return batch;
+	}
+
 	
 }
 

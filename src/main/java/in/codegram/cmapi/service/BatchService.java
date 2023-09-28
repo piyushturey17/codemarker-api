@@ -7,4 +7,5 @@ public interface BatchService {
 	 Batch saveOrUpdate(Batch batch );
 	 Iterable<Batch> findAllBatch();
 	 void delete(String BatchID);
+	 Batch findBatchByBatchIdentifier(String batchIdentifier);
 }

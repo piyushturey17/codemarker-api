@@ -14,34 +14,45 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class Report {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@NotBlank(message = "Student name can not be empty")
-	private String name;
-	@NotBlank(message = "Batch  name can not be empty")
-	private String batch;
-	@NotBlank(message = "Technology name can not be empty")
-	private String technology;
-	@NotBlank(message="test identifier cannot be empty")
-	@Size(min=4,max=5,message="report identifier must be in the range of 4 to 5 character")
-	@Column(updatable = false,unique = true)
+
+	@NotBlank(message = "reportName is required")
+	private String reportName;
+
+	@NotBlank(message = "report identifier cannot be empty")
+	@Size(min = 4, max = 12, message = "report identifier must be in the range of 4 to 12 character")
+	@Column(updatable = false, unique = true)
 	private String reportIdentifier;
-	public String getReportIdentifier() {
-		return reportIdentifier;
+
+	@NotBlank(message = "Batch name cannot be empty ")
+	private String batchName;
+
+	@NotBlank(message = "technology name can not be empty")
+	private String technologyName;
+
+	@NotBlank(message = "description is required")
+	private String reportdescription;
+
+	private Date report_created_At;
+	private Date report_updated_At;
+
+	public String getTechnologyName() {
+		return technologyName;
 	}
 
-	public void setReportIdentifier(String reportIdentifier) {
-		this.reportIdentifier = reportIdentifier;
+	public void setTechnologyName(String technologyName) {
+		this.technologyName = technologyName;
 	}
 
-	private Date report_create_At;
-	private Date report_update_At;
-	
+	public String getBatchName() {
+		return batchName;
+	}
 
-
-	public Report() {
-
+	public void setBatchName(String batchName) {
+		this.batchName = batchName;
 	}
 
 	public Long getId() {
@@ -52,55 +63,56 @@ public class Report {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getReportName() {
+		return reportName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
 	}
 
-	public String getBatch() {
-		return batch;
+	public String getReportIdentifier() {
+		return reportIdentifier;
 	}
 
-	public void setBatch(String batch) {
-		this.batch = batch;
+	public void setReportIdentifier(String reportIdentifier) {
+		this.reportIdentifier = reportIdentifier;
 	}
 
-	public String getTechnology() {
-		return technology;
+	public String getReportdescription() {
+		return reportdescription;
 	}
 
-	public void setTechnology(String technology) {
-		this.technology = technology;
+	public void setReportdescription(String reportdescription) {
+		this.reportdescription = reportdescription;
 	}
 
 
-	public Date getReport_create_At() {
-		return report_create_At;
+
+	public Date getReport_created_At() {
+		return report_created_At;
 	}
 
-	public void setReport_create_At(Date report_create_At) {
-		this.report_create_At = report_create_At;
+	public void setReport_created_At(Date report_created_At) {
+		this.report_created_At = report_created_At;
 	}
 
-	public Date getReport_update_At() {
-		return report_update_At;
+	public Date getReport_updated_At() {
+		return report_updated_At;
 	}
 
-	public void setReport_update_At(Date report_update_At) {
-		this.report_update_At = report_update_At;
+	public void setReport_updated_At(Date report_updated_At) {
+		this.report_updated_At = report_updated_At;
 	}
 
 	@PrePersist
 	public void onCreate() {
-		this.report_create_At = new Date();
+		this.report_created_At = new Date();
 	}
 
 	@PreUpdate
 	public void onUpdate() {
-		this.report_update_At = new Date();
+		this.report_updated_At = new Date();
 	}
 
 }
